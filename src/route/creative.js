@@ -11,3 +11,5 @@ router.get('/data', async (ctx, next) => {
 router.post('/upload', async (ctx, next) => {
 
 })
+
+module.exports = router

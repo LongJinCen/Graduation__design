@@ -1,15 +1,31 @@
 const Koa = require('koa')
 const http = require('http')
 const bodyParser = require('koa-bodyparser')
+const creativeRouter = require('./route/creative')
+const dataRouter = require('./route/data')
+const promotionRouter = require('./route/promotion')
+const userRouter = require('./route/user')
+const verifyRouter = require('./route/verify')
+const session = require('koa-generic-session');
+const redisStore = require('koa-redis');
+const dbConfig = require('./config/db')
 
 const app = new Koa()
 
+app.keys = ['fdskfjds', 'jkjklcmwrew'];
+
+app.use(session({
+  store: redisStore(dbConfig.REDIS_CONFIG)
+}));
+
 app.use(bodyParser())
-app.use(async (ctx, next) => {
-  console.log(ctx.cookies.get('Cookie_1'))
-  console.log(ctx.request.body)
-  ctx.body = '搜到'
-})
+
+app.use(creativeRouter.routes()).use(creativeRouter.allowedMethods())
+app.use(dataRouter.routes()).use(dataRouter.allowedMethods())
+app.use(promotionRouter.routes()).use(promotionRouter.allowedMethods())
+app.use(userRouter.routes()).use(userRouter.allowedMethods())
+app.use(verifyRouter.routes()).use(verifyRouter.allowedMethods())
+
 
 const server = http.createServer(app.callback())
 

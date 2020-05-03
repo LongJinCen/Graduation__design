@@ -4,7 +4,7 @@
   "description": "毕设 back end。",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/app.js"
+    "start": "NODE_ENV=development nodemon --watch src/ --exec 'node' ./src/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,15 @@
   },
   "homepage": "https://github.com/LongJinCen/Graduation__design#readme",
   "devDependencies": {
-    "cz-conventional-changelog": "^3.1.0"
+    "cz-conventional-changelog": "^3.1.0",
+    "koa-generic-session": "^2.0.4",
+    "koa-redis": "^4.0.1"
   },
   "dependencies": {
     "@koa/router": "^8.0.8",
     "koa": "^2.11.0",
-    "koa-bodyparser": "^4.3.0"
+    "koa-bodyparser": "^4.3.0",
+    "mongodb": "^3.5.7"
   },
   "config": {
     "commitizen": {
