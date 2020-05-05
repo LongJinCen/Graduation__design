@@ -4,7 +4,7 @@ let MONGODB_CONFIG,
 
 if (env === 'development') {
     MONGODB_CONFIG = {
-        url: 'mongodb://localhost:27017',
+        url: 'mongodb://127.0.0.1:27017',
         dbName: 'ad'
     }
     REDIS_CONFIG = {

@@ -3,8 +3,5 @@ module.exports = async function (ctx, next) {
     await next()
     return
   }
-  ctx.body = {
-    code: 403,
-    message: '未登录'
-  }
+  ctx.redirect('/ad/login.html')
 }

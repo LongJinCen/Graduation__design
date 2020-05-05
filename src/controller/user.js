@@ -1,13 +1,15 @@
 const db = require('../db/dbInstance')
 
 async function login_email(data) {
-  const collection = await db('user')
-  const result = await collection.find(data).toArray()
+  const instance = await db('user')
+  const collection = instance.collection
+  const result = await collection.find({email: data.email}).toArray()
   return result
 }
 
-async function login_phone() {
-  const collection = await db('user')
+async function login_phone(data) {
+  const instance = await db('user')
+  const collection = instance.collection
   const result = await collection.find(data).toArray()
   return result
 }
@@ -16,27 +18,37 @@ async function login_out() {
 
 }
 
-async function info(accountName) {
-  const collection = await db('user')
-  const result = await collection.find({accountName}).toArray()
+async function info(phoneNumber) {
+  const instance = await db('user')
+  const collection = instance.collection
+  const result = await collection.find({phoneNumber}).toArray()
   return result
 }
 
-async function register_phone(data) {
-  const collection = await db('user')
-  const result = await collection.insertMany([data])
+async function register_phone(phoneNumber, data) {
+  const instance = await db('user')
+  const collection = instance.collection
+  let result = null
+  if (phoneNumber) {
+    result = await collection.updateOne({phoneNumber}, {$set: data})
+  } else {
+    result = await collection.insertMany([data])
+    collection.createIndex({ id: 1 })
+  }
   return result
 }
 
-async function register_email(userId, data) {
-  const collection = await db('user')
-  const result = await collection.updateOne({_id: userId}, {$set: data})
+async function register_email(phoneNumber, data) {
+  const instance = await db('user')
+  const collection = instance.collection
+  const result = await collection.updateOne({phoneNumber}, {$set: data})
   return result
 }
 
-async function register_setInfo(userId, data) {
-  const collection = await db('user')
-  const result = await collection.updateOne({_id: userId}, {$set: data})
+async function register_setInfo(phoneNumber, data) {
+  const instance = await db('user')
+  const collection = instance.collection
+  const result = await collection.updateOne({phoneNumber}, {$set: data})
   return result
 }
 
