@@ -26,7 +26,6 @@ app.use(promotionRouter.routes()).use(promotionRouter.allowedMethods())
 app.use(userRouter.routes()).use(userRouter.allowedMethods())
 app.use(verifyRouter.routes()).use(verifyRouter.allowedMethods())
 
-
 const server = http.createServer(app.callback())
 
 server.on("listening", () => {

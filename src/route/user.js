@@ -1,6 +1,7 @@
 const Router = require('@koa/router')
 const LoginCheckMiddleware = require('../middleware/login-check')
 const userController = require('../controller/user')
+const dataController = require('../controller/data')
 
 const router = new Router({
   prefix: '/ad/user'
@@ -9,7 +10,6 @@ const router = new Router({
 router.post('/login_email', async (ctx, next) => {
   const body = ctx.request.body
   const result = await userController.login_email(body)
-  console.log(result, 'result')
   if (result.length > 0 && result[0].password === body.password) {
     ctx.session.isLogin = true
     ctx.session.phoneNumber = result[0].phoneNumber
@@ -80,7 +80,6 @@ router.post('/login_out', async (ctx, next) => {
 router.get('/Info', LoginCheckMiddleware, async (ctx, next) => {
   const phoneNumber = ctx.session.phoneNumber
   const result = await userController.info(phoneNumber)
-  console.log(result, 'result')
   ctx.body = result[0]
 })
 
@@ -97,7 +96,7 @@ router.post('/register/phone', async (ctx, next) => {
     return
   }
   if (body.phoneNumber === verifyInfo.phoneNumber && body.verifycode === verifyInfo.verifycode) {
-    const result = await userController.register_phone(ctx.session.phoneNumber, {
+    await userController.register_phone(ctx.session.phoneNumber, {
       email: '',
       accountName: '',
       industry: '',
@@ -111,6 +110,7 @@ router.post('/register/phone', async (ctx, next) => {
       budgetShortPlains: 0,
       problemPlains: 0
     })
+    await dataController.createDocuemnt(ctx, body.phoneNumber)
     if (!ctx.session.phoneNumber) {
       ctx.session.phoneNumber = body.phoneNumber
     }
