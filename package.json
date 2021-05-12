@@ -31,7 +31,7 @@
     "koa-multer": "^1.0.2",
     "moment": "^2.25.3",
     "mongodb": "^3.5.7",
-    "nodemailer": "^6.4.6"
+    "nodemailer": "^6.4.16"
   },
   "config": {
     "commitizen": {
